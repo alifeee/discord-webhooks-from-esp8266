@@ -18,6 +18,12 @@ The simplest webhook only needs a `content` field.
 }
 ```
 
+To turn a JSON file into something you can put in `.cpp` files (i.e., escape the quotes), run something like:
+
+```bash
+cat webhook.json | jq -c | sed 's/"/\\"/g'
+```
+
 ## Programming
 
 ### set up secrets

@@ -1,0 +1,20 @@
+{
+    "content": "The space is now OPEN!",
+    "username": "[occupancy button]",
+    "avatar_url": "https://server.alifeee.net/static/shhm/logo.png",
+    "embeds": [
+        {
+            "author": {
+                "name": "SHHM",
+                "url": "https://www.sheffieldhackspace.org.uk/",
+                "icon_url": "https://server.alifeee.net/static/shhm/logo.png"
+            },
+            "title": "the space is OPEN",
+            "url": "https://www.sheffieldhackspace.org.uk/",
+            "description": "the space is now OPEN",
+            "image": {
+                "url": "https://www.sheffieldhackspace.org.uk/assets/images/woodturning-header.jpg"
+            }
+        }
+    ]
+}

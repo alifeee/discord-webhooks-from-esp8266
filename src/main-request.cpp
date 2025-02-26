@@ -12,12 +12,6 @@
 #include <ESP8266WiFiMulti.h>
 ESP8266WiFiMulti wifiMulti;
 
-// serial
-#include <SoftwareSerial.h>
-#define RX 4
-#define TX 5
-SoftwareSerial link(RX, TX); // Rx, Tx
-
 #include <ESP8266HTTPClient.h>
 // #include <WiFiClient.h>
 // #include <WiFiClientSecure.h>
@@ -25,20 +19,33 @@ SoftwareSerial link(RX, TX); // Rx, Tx
 
 #include <secrets.h>
 
-#define JSON_MESSAGE "{\"content\": \"hello there\"}"
+#define SWITCH_PIN D3 // GPIO 0
+
+// #define JSON_MESSAGE "{\"content\": \"hello there\"}"
+#define JSON_MESSAGE                                                           \
+  "{\"content\":\"The space is now OPEN!\",\"username\":\"[occupancy "         \
+  "button]\",\"avatar_url\":\"https://server.alifeee.net/static/shhm/"         \
+  "logo.png\",\"embeds\":[{\"author\":{\"name\":\"SHHM\",\"url\":\"https://"   \
+  "www.sheffieldhackspace.org.uk/\",\"icon_url\":\"https://"                   \
+  "server.alifeee.net/static/shhm/logo.png\"},\"title\":\"the space is "       \
+  "OPEN\",\"url\":\"https://www.sheffieldhackspace.org.uk/"                    \
+  "\",\"description\":\"the space is now "                                     \
+  "OPEN\",\"image\":{\"url\":\"https://www.sheffieldhackspace.org.uk/assets/"  \
+  "images/woodturning-header.jpg\"}}]}"
 
 void setup() {
+  // SETUP BUTTON
+  pinMode(SWITCH_PIN, INPUT_PULLUP);
+
+  // SETUP LED
+  pinMode(LED_BUILTIN, OUTPUT);
+
   // SETUP SERIAL
   Serial.begin(9600);
   while (!Serial) {
     delay(100);
   }
   Serial.print("Set up!");
-
-  // SETUP INTRA-DEVICE SERIAL
-  link.begin(9600);
-  pinMode(RX, INPUT);
-  pinMode(TX, OUTPUT);
 
   // SETUP wifi
   WiFi.mode(WIFI_STA);
@@ -55,10 +62,17 @@ void setup() {
 }
 
 void loop() {
+  // turn light off
+  digitalWrite(LED_BUILTIN, HIGH);
+  int buttonState = digitalRead(SWITCH_PIN);
   // Check WiFi connection and reconnect if needed
   if (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("Wifi connection lost");
+  } else if (buttonState == 1) {
+    // button not pressed, skip
   } else {
+    // turn light on while request runs
+    digitalWrite(LED_BUILTIN, LOW);
     // copied from
     // https://randomnerdtutorials.com/esp8266-nodemcu-https-requests/
 
@@ -109,5 +123,4 @@ void loop() {
       Serial.printf("[HTTPS] Unable to connect\n");
     }
   }
-  delay(10000);
 }
