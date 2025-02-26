@@ -2,6 +2,8 @@
 
 Sending a Discord webhook (message to a channel) from an ESP8266 (D1 Mini).
 
+![screenshot of Discord webhook message](images/webhook_example.png)
+
 Test webhooks with a POST request
 
 ```bash
